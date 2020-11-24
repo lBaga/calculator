@@ -1,3 +1,5 @@
+#ifndef CALCULATER_H
+#define CALCULATER_H
 #pragma once
 #include <string_view>
 #include <algorithm>
@@ -129,7 +131,7 @@ namespace details {
             std::replace(std::begin(number), std::end(number), ',', '.');
 
             if (std::count(std::begin(number), std::end(number), '.') > 1)
-                throw std::runtime_error("Некорректный ввод, строка содержит недопустимое выражение " + expr_number);
+                throw std::runtime_error("РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ, СЃС‚СЂРѕРєР° СЃРѕРґРµСЂР¶РёС‚ РЅРµРґРѕРїСѓСЃС‚РёРјРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ " + expr_number);
 
             return { number , true };
         }
@@ -167,7 +169,7 @@ namespace details {
 
         if (!token.second)
         {
-            throw std::runtime_error("Некорректный ввод, строка содержит недопустимое выражение " + token.first);
+            throw std::runtime_error("РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ, СЃС‚СЂРѕРєР° СЃРѕРґРµСЂР¶РёС‚ РЅРµРґРѕРїСѓСЃС‚РёРјРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ " + token.first);
         }
 
         if (token.first == "(")
@@ -175,7 +177,7 @@ namespace details {
             auto result = parse();
             if (parse_token().first != ")")
             {
-                throw std::runtime_error("Отсутствует ')'");
+                throw std::runtime_error("РћС‚СЃСѓС‚СЃС‚РІСѓРµС‚ ')'");
             }
             return result;
         }
@@ -229,21 +231,22 @@ namespace details {
             {
                 return unary_operations.at(e.token)(eval(e.args[0]));
             }
-            else throw std::runtime_error("Неизвестная унарная операция");
+            else throw std::runtime_error("РќРµРёР·РІРµСЃС‚РЅР°СЏ СѓРЅР°СЂРЅР°СЏ РѕРїРµСЂР°С†РёСЏ");
         }
         case 2:
         {
             if (e.token == "/" && eval(e.args[1]) == 0.0)
-                throw std::runtime_error("Запрещено делить на ноль");
+                throw std::runtime_error("Р—Р°РїСЂРµС‰РµРЅРѕ РґРµР»РёС‚СЊ РЅР° РЅРѕР»СЊ");
 
             if (binary_operations.find(e.token) != std::end(binary_operations))
             {
                 return binary_operations.at(e.token)(eval(e.args[0]), eval(e.args[1]));
             }
-            else throw std::runtime_error("Неизвестная бинарная операция");
+            else throw std::runtime_error("РќРµРёР·РІРµСЃС‚РЅР°СЏ Р±РёРЅР°СЂРЅР°СЏ РѕРїРµСЂР°С†РёСЏ");
         }
         default:
-            throw std::runtime_error("Неверный тип выражения");
+            throw std::runtime_error("РќРµРІРµСЂРЅС‹Р№ С‚РёРї РІС‹СЂР°Р¶РµРЅРёСЏ");
         }
     }
 }
+#endif // CALCULATER_H
